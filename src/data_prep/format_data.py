@@ -87,6 +87,6 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        print("Usage: python src/data_prep/format_kaggle_files.py data/raw/HI-Small_Trans.csv [--outdir data/interim]")
+        print("Usage: python src/data_prep/format_data.py data/raw/HI-Small_Trans.csv [--outdir data/interim]")
         sys.exit(1)
     main()
