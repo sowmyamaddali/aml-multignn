@@ -18,13 +18,13 @@ def main():
     outDir.mkdir(parents=True, exist_ok=True)
 
     # Output filename: <input_stem>_formatted.csv
-    base = Path(inPath).stem  # e.g., HI-Small_Trans
+    base = Path(inPath).stem 
     outPath = outDir / f"{base}_formatted.csv"
 
     # loading raw data
     raw = dt.fread(inPath, columns=dt.str32)
 
-    # creating dictionaries for categorical encoding
+    # turning strings into stable integer IDs
     currency = {}
     paymentFormat = {}
     account = {}
@@ -46,7 +46,7 @@ def main():
     with open(outPath, "w") as writer:
         writer.write(header)
         for i in range(raw.nrows):
-            # Expecting format YYYY/MM/DD HH:MM
+            # Assuming the Timestamp column is present in the YYYY/MM/DD HH:MM format
             dt_obj = datetime.strptime(raw[i, "Timestamp"], "%Y/%m/%d %H:%M")
             ts = dt_obj.timestamp()
 
@@ -55,6 +55,7 @@ def main():
                 firstTs = startTime.timestamp() - 10
             ts = ts - firstTs
 
+            # Mapping currency strings and payment format to integer IDs
             cur_recv = get_dict_val(raw[i, "Receiving Currency"], currency)
             cur_pay = get_dict_val(raw[i, "Payment Currency"], currency)
             fmt = get_dict_val(raw[i, "Payment Format"], paymentFormat)
